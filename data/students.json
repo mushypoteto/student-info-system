@@ -1,0 +1,12 @@
+[
+  {
+    "student_id": "c691ff9d",
+    "name": "Mark Fausto",
+    "email": "mushypoteto17@gmail.com",
+    "course": "BSIT",
+    "year_level": "3",
+    "gpa": 1.75,
+    "created_at": "2026-10-08T23:01:36.325127",
+    "updated_at": "2026-10-08T23:01:36.325141"
+  }
+]

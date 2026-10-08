@@ -30,7 +30,8 @@ class StudentInformationSystem:
         print("[4] Update Student")
         print("[5] Delete Student")
         print("[6] Search Students")
-        print("[7] Exit")
+        print("[7] Export Students to CSV")
+        print("[8] Exit")
         print("=" * 55)
 
     def add_student(self):
@@ -274,6 +275,26 @@ class StudentInformationSystem:
             )
             print("An error occurred while deleting the student.")
 
+    def export_students(self):
+        """Export student records to a CSV file."""
+
+        try:
+            success = self.student_service.export_to_csv()
+
+            if success:
+                print("\nStudents exported successfully!")
+                print("File: data/students_export.csv")
+            else:
+                print("\nNo student records found to export.")
+
+        except Exception as error:
+            print(f"\nExport error: {error}")
+
+            self.logger.error(
+                "CSV export failed from application menu: %s",
+                error
+            )
+
     def run(self):
         """Run the main application loop."""
 
@@ -284,7 +305,7 @@ class StudentInformationSystem:
             self.display_menu()
 
             choice = input(
-                "Enter your choice (1-7): "
+                "Enter your choice (1-8): "
             ).strip()
 
             if choice == "1":
@@ -306,19 +327,22 @@ class StudentInformationSystem:
                 self.search_students()
 
             elif choice == "7":
+                self.export_students()
+
+            elif choice == "8":
                 self.logger.info(
                     "Student Information System closed."
                 )
 
-                print("\nThank you for using the Student Information System!")
+                print(
+                    "\nThank you for using the Student Information System!"
+                )
                 break
 
             else:
                 print(
-                    "\nInvalid choice. Please select an option from 1 to 6."
+                    "\nInvalid choice. Please select an option from 1 to 8."
                 )
-
-
 if __name__ == "__main__":
     app = StudentInformationSystem()
     app.run()

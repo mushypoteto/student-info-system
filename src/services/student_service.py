@@ -1,3 +1,4 @@
+import csv
 import json
 from datetime import datetime
 
@@ -172,6 +173,70 @@ class StudentService:
         )
 
         return results
+
+    def export_to_csv(self, output_file="data/students_export.csv"):
+        """Export all student records to a CSV file."""
+
+        try:
+            students = self._load_students()
+
+            if not students:
+                self.logger.warning(
+                    "CSV export requested but no student records were found."
+                )
+                return False
+
+            output_path = self.data_file.parent.parent / output_file
+
+            output_path.parent.mkdir(
+                parents=True,
+                exist_ok=True
+            )
+
+            fieldnames = [
+                "student_id",
+                "name",
+                "email",
+                "course",
+                "year_level",
+                "gpa",
+                "created_at",
+                "updated_at"
+            ]
+
+            with open(
+                output_path,
+                "w",
+                newline="",
+                encoding="utf-8"
+            ) as file:
+
+                writer = csv.DictWriter(
+                    file,
+                    fieldnames=fieldnames
+                )
+
+                writer.writeheader()
+                writer.writerows(students)
+
+            self.logger.info(
+                "Exported %d student record(s) to %s",
+                len(students),
+                output_path
+            )
+
+            return True
+
+        except OSError as error:
+            self.logger.error(
+                "CSV export failed: %s",
+                error
+            )
+
+            raise RuntimeError(
+                f"Unable to export student records: {error}"
+            )
+
 
     def update_student(self, student_id, update_data):
         """Update an existing student's information."""

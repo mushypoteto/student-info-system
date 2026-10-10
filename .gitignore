@@ -25,3 +25,6 @@ env/
 # OS
 Thumbs.db
 .DS_Store
+
+# Generated exports
+data/*_export.csv
